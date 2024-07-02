@@ -20,7 +20,9 @@ module.exports = {
     },
     extend: {
       colors: {
-        'primary-500': '#e06444', 
+        // links e botao
+        'primary-500': '#8C429D', 
+
         'primary-600': '#FF5A5A', 
         'secondary-500': '#FFB620',
         'off-white': '#D0DFFF',
@@ -28,11 +30,13 @@ module.exports = {
         'dark-1': '#000000',
         'dark-2': '#09090A',
         'dark-3': '#101012',
-        'dark-4': '#1F1F22',
+        'dark-4': '#ffff',
         'light-1': '#FFFFFF',
-        'light-2': '#EFEFEF',
+        // Clarinho
+        'light-2': '#5C5C7B',
         'light-3': '#7878A3',
         'light-4': '#5C5C7B',
+        'purple-1': '#8C429D',
       },
       screens: {
         'xs': '480px',
@@ -61,7 +65,7 @@ module.exports = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       backgroundImage: {
-        'left-img': "url('/assets/images/background-auth.svg')",
+        'left-img-FULL': "url('/assets/images/background-auth-FULL.svg')",
       },
     },
   },
