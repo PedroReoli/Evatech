@@ -9,10 +9,13 @@ import { z } from "zod";
 // Components  & Hooks
 import { Button } from "@/components/ui/button";
 import { signupValidation } from "@/lib/validation";
+import Loader from "@/components/shared/Loader";
 
 
 
 const SignupForm = () => {
+  const isLoading = true;
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof signupValidation>>({
     resolver: zodResolver(signupValidation),
@@ -83,7 +86,18 @@ const SignupForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="shad-button_primary">Enviar</Button>
+
+          <Button type="submit" className="shad-button_primary">
+            {isLoading ? (
+              <div className="flex-center gap-2">
+                <Loader /> Carregando
+              </div>
+            ) : (
+              "Junte-se a Nós"
+            )}
+          </Button>
+
+
           </form>
       </div>
     </Form>
