@@ -14,8 +14,11 @@ module.exports = {
       center: true,
       padding: '2rem',
       screens: {
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
         '2xl': '1400px',
-      
       },
     },
     extend: {
@@ -65,7 +68,8 @@ module.exports = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       backgroundImage: {
-        'left-img-FULL': "url('/assets/images/background-auth-FULL.svg')",
+        // 'left-img-FULL': "url('/assets/images/background-auth-FULL.svg')",
+        'left-img-FULL': "url('/assets/images/background-auth3.svg')",
       },
     },
   },
