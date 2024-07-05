@@ -4,6 +4,10 @@ import './globals.css';
 import SigninForm  from './_auth/forms/SigninForm';
 import SignupForm from './_auth/forms/SignupForm';
 import AuthLayout from './_auth/AuthLayout';
+
+// TOAST component 
+import { Toaster } from '@/components/ui/toaster';
+
 // Páginas 
 // Devido ao index.ts ,agora dá para importar mais facil 
 // fica assim agora {pagina1,pagina2,pagina3} from  './_root/pages/'
@@ -23,7 +27,7 @@ const App = () => {
                  <Route index element={<Home/>}/>    
             </Route>
         </Routes>
-
+        <Toaster/>
     </main>    
 
 )

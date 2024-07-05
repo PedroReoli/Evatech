@@ -12,10 +12,12 @@ import { Button } from "@/components/ui/button";
 import { signupValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
 import { createUserAccount } from "@/lib/appwrite/api";
+import { useToast } from "@/components/ui/use-toast";
 
 
 
 const SignupForm = () => {
+  const { toast  }= useToast();
   const isLoading = false;
 
    
@@ -32,9 +34,13 @@ const SignupForm = () => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof signupValidation>) {
     const newUser = await createUserAccount(values);
-    console.log(newUser);
+    if (!newUser) 
+      return toast({title: "Falha ao cadastrar . Tente novamente mais tarde."})
+    
   }
-  return (
+
+    // const session = await signInAccount()
+  return ( 
       <Form {...form}>
     <div className="sm:w-420 flex-center flex-col ">
 
@@ -128,6 +134,7 @@ const SignupForm = () => {
         <img src="/assets/images/logo.svg" alt="logo" width="450"  />
         </div>
     </Form>
+    
   )
 }
 
