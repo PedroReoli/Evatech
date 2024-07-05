@@ -1,9 +1,47 @@
 import * as z from "zod";
 
-//aqui toda a validação é feita e sera exportada ( pois nao irei usar aqui )
+// ============================================================
+// USER
+// ============================================================
 export const SignupValidation = z.object({
-    name: z.string().min(2, {message: "Tem que ter mais de 2 letras"}),
-    username: z.string().min(2, {message: "Tem que ter mais de 2 letras"}),
-    email: z.string().email(),
-    password: z.string().min(8, {message: "Senha precisa ter pelo menos 8 caracteres"}),
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  username: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email(),
+  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
+});
+
+export const SigninValidation = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
+});
+
+export const ProfileValidation = z.object({
+  file: z.custom<File[]>(),
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  username: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email(),
+  bio: z.string(),
+});
+
+// ============================================================
+// POST
+// ============================================================
+export const PostValidation = z.object({
+  caption: z.string().min(5, { message: "Minimum 5 characters." }).max(2200, { message: "Maximum 2,200 caracters" }),
+  file: z.custom<File[]>(),
+  location: z.string().min(1, { message: "This field is required" }).max(1000, { message: "Maximum 1000 characters." }),
+  tags: z.string(),
+});
+
+// ============================================================
+// EVENT
+// ============================================================
+
+export const EventValidation = z.object({
+  title: z.string().min(2, { message: "O titulo precisa ter no minimo 2 caracteres" }),
+  description: z.string().min(5, { message: "No minimo 5 caracteres" }),
+  date: z.string().min(1, { message: "Campo Obrigatório" }),
+  location: z.string().min(1, { message: "Campo Obrigatório" }),
+  users: z.string(), 
+  package: z.string(), 
 });
