@@ -19,7 +19,7 @@ const SigninForm = () => {
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
   // Query
-  const { mutateAsync: signInAccount, isLoading } = useSignInAccount();
+  const { mutateAsync: signInAccount, isPending } = useSignInAccount();
 
   const form = useForm<z.infer<typeof SigninValidation>>({
     resolver: zodResolver(SigninValidation),
@@ -33,7 +33,7 @@ const SigninForm = () => {
     const session = await signInAccount(user);
 
     if (!session) {
-      toast({ title: "Login failed. Please try again." });
+      toast({ title: "Falha ao fazer login. Por favor, tente novamente." });
       
       return;
     }
@@ -45,7 +45,7 @@ const SigninForm = () => {
 
       navigate("/");
     } else {
-      toast({ title: "Login failed. Please try again.", });
+      toast({ title: "Falha ao fazer login. Por favor, tente novamente." });
       
       return;
     }
@@ -54,13 +54,13 @@ const SigninForm = () => {
   return (
     <Form {...form}>
       <div className="sm:w-420 flex-center flex-col">
-      <img src="/assets/icons/logo-form.svg" alt="logo" width="300" />
+       
 
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
-          Faça login na sua conta
+          Entre na sua conta
         </h2>
         <p className="text-light-3 small-medium md:base-regular mt-2">
-        Bem-vindo de volta! Por favor, insira seus dados.
+          Bem-vindo de volta! Por favor, insira seus detalhes.
         </p>
         <form
           onSubmit={form.handleSubmit(handleSignin)}
@@ -70,7 +70,7 @@ const SigninForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="shad-form_label">Email</FormLabel>
+                <FormLabel >Email</FormLabel>
                 <FormControl>
                   <Input type="text" className="shad-input" {...field} />
                 </FormControl>
@@ -84,7 +84,7 @@ const SigninForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="shad-form_label">Senha</FormLabel>
+                <FormLabel>Senha</FormLabel>
                 <FormControl>
                   <Input type="password" className="shad-input" {...field} />
                 </FormControl>
@@ -94,17 +94,17 @@ const SigninForm = () => {
           />
 
           <Button type="submit" className="shad-button_primary">
-            {isLoading || isUserLoading ? (
+            {isPending || isUserLoading ? (
               <div className="flex-center gap-2">
                 <Loader /> Carregando...
               </div>
             ) : (
-              "Log in"
+              "Entrar"
             )}
           </Button>
 
           <p className="text-small-regular text-light-2 text-center mt-2">
-          Não tem uma conta?
+            Não possui uma conta?
             <Link
               to="/sign-up"
               className="text-primary-500 text-small-semibold ml-1">
@@ -113,6 +113,10 @@ const SigninForm = () => {
           </p>
         </form>
       </div>
+      <div className="div-logo lg:pt-5">
+      {/* LEMBRAR DE FAZER A LOGO DO EVATECH DEPOIS  */}
+        <img src="/assets/images/logo.svg" alt="logo" width="450"  />
+        </div>
     </Form>
   );
 };
