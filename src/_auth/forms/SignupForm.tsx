@@ -1,19 +1,23 @@
-// Zod 
-import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/shared/Loader";
-import { createUserAccount } from "@/lib/appwrite/api";
-import { SignupValidation } from "@/lib/validation";
 import { useToast } from "@/components/ui/use-toast";
+
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queries";
+import { SignupValidation } from "@/lib/validation";
+import { useUserContext } from "@/context/AuthContext";
 
 const SignupForm = () => {
   const { toast } = useToast();
-  const isLoading = false;
+  const navigate = useNavigate();
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
+
 
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
@@ -24,15 +28,49 @@ const SignupForm = () => {
       password: "",
     },
   });
+ // Queries
+ const { mutateAsync: createUserAccount, isPending: isCreatingAccount } = useCreateUserAccount();
+ const { mutateAsync: signInAccount, isPending: isSigningInUser } = useSignInAccount();
 
-  // Define a submit handler.
-  async function onSubmit(values: z.infer<typeof SignupValidation>) {
-    const newUser = await createUserAccount(values);
-    if (!newUser) {
-      return toast({ title: "Falha ao cadastrar. Tente novamente mais tarde." });
-    }
-    // Additional logic can be added here if needed.
-  }
+ // Handler
+ const handleSignup = async (user: z.infer<typeof SignupValidation>) => {
+   try {
+     const newUser = await createUserAccount(user);
+
+     if (!newUser) {
+       toast({ title: "Falha ao entrar na sessão , tente de novo", });
+       
+       return;
+     }
+
+     const session = await signInAccount({
+       email: user.email,
+       password: user.password,
+     });
+
+     if (!session) {
+       toast({ title: "Algo deu errado , por favor dê login na sua conta nova", });
+       
+       navigate("/sign-in");
+       
+       return;
+     }
+
+     const isLoggedIn = await checkAuthUser();
+
+     if (isLoggedIn) {
+       form.reset();
+
+       navigate("/");
+     } else {
+       toast({ title: "Erro ao entrar na sessão ", });
+       
+       return;
+     }
+   } catch (error) {
+     console.log({ error });
+   }
+ };
 
   return (
     <Form {...form}>
@@ -42,7 +80,7 @@ const SignupForm = () => {
           Utilize seu nome e senha para iniciar sua sessão.
         </p>
 
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full mt-4">
+        <form onSubmit={form.handleSubmit(handleSignup)} className="flex flex-col gap-5 w-full mt-4">
           {/* Nome */}
           <FormField
             control={form.control}
@@ -81,7 +119,7 @@ const SignupForm = () => {
               <FormItem>
                 <FormLabel>E-mail</FormLabel>
                 <FormControl>
-                  <Input type="email" className="shad-input" {...field} />
+                  <Input type="text" className="shad-input" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -104,9 +142,9 @@ const SignupForm = () => {
           />
 
           <Button type="submit" className="shad-button_primary">
-            {isLoading ? (
+          {isCreatingAccount || isSigningInUser || isUserLoading ? (
               <div className="flex-center gap-2">
-                <Loader /> Carregando
+                <Loader /> Carregando...
               </div>
             ) : (
               "Junte-se a Nós"
@@ -121,6 +159,10 @@ const SignupForm = () => {
           </p>
         </form>
       </div>
+      <div className="div-logo lg:pt-5">
+      {/* LEMBRAR DE FAZER A LOGO DO EVATECH DEPOIS  */}
+        <img src="/assets/images/logo.svg" alt="logo" width="450"  />
+        </div>
     </Form>
   );
 };
