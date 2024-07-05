@@ -9,7 +9,7 @@ import { z } from "zod";
 
 // Components  & Hooks
 import { Button } from "@/components/ui/button";
-import { signupValidation } from "@/lib/validation";
+import { SignupValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
 import { createUserAccount } from "@/lib/appwrite/api";
 import { useToast } from "@/components/ui/use-toast";
@@ -21,8 +21,8 @@ const SignupForm = () => {
   const isLoading = false;
 
    
-  const form = useForm<z.infer<typeof signupValidation>>({
-    resolver: zodResolver(signupValidation),
+  const form = useForm<z.infer<typeof SignupValidation>>({
+    resolver: zodResolver(SignupValidation),
     defaultValues: {
       name: "",
       username: "",
@@ -32,7 +32,7 @@ const SignupForm = () => {
   }); 
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof signupValidation>) {
+  async function onSubmit(values: z.infer<typeof SignupValidation>) {
     const newUser = await createUserAccount(values);
     if (!newUser) 
       return toast({title: "Falha ao cadastrar . Tente novamente mais tarde."})

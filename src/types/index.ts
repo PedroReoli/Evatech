@@ -34,6 +34,7 @@ export type INavLink = {
   export type IUser = {
     id: string;
     name: string;
+    email: string;
     username: string;
     imageUrl: string;
     bio: string;
