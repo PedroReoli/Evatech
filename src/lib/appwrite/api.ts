@@ -62,7 +62,7 @@ export async function saveUserToDB(user: {
 // ============================== SIGN IN
 export async function signInAccount(user: { email: string; password: string }) {
   try {
-    const session = await account.createEmailPasswordSession(user.email, user.password);
+    const session = await account.createEmailSession(user.email, user.password);
 
     return session;
   } catch (error) {
@@ -185,7 +185,7 @@ export function getFilePreview(fileId: string) {
       fileId,
       2000,
       2000,
-      undefined, // ANTES ERA "top" , mas o appwrite atualizou .....
+      "top",
       100
     );
 
@@ -545,3 +545,100 @@ export async function updateUser(user: IUpdateUser) {
     console.log(error);
   }
 }
+
+// // ============================================================
+// // EVENTS
+// // ============================================================
+// export async function createEvent(event: INewEvent) {
+//   try {
+//     const newEvent = await databases.createDocument(
+//       appwriteConfig.databaseId,
+//       appwriteConfig.eventsCollectionId,
+//       ID.unique(),
+//       {
+//         title: event.title,
+//         description: event.description,
+//         date: event.date,
+//         location: event.location,
+//         participants: event.participants,
+//         // Adicione outros atributos do evento conforme necessário
+//       }
+//     );
+
+//     return newEvent;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+// // ============================== GET EVENTS
+// export async function getEvents() {
+//   try {
+//     const events = await databases.listDocuments(
+//       appwriteConfig.databaseId,
+//       appwriteConfig.eventsCollectionId,
+//       [Query.orderDesc("$createdAt")]
+//     );
+
+//     return events;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+// // ============================== GET EVENT BY ID
+// export async function getEventById(eventId: string) {
+//   try {
+//     const event = await databases.getDocument(
+//       appwriteConfig.databaseId,
+//       appwriteConfig.eventsCollectionId,
+//       eventId
+//     );
+
+//     return event;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+// // ============================== UPDATE EVENT
+// export async function updateEvent(event: IUpdateEvent) {
+//   try {
+//     const updatedEvent = await databases.updateDocument(
+//       appwriteConfig.databaseId,
+//       appwriteConfig.eventsCollectionId,
+//       event.eventId,
+//       {
+//         title: event.title,
+//         description: event.description,
+//         date: event.date,
+//         location: event.location,
+//         participants: event.participants,
+//         // Atualize outros atributos do evento conforme necessário
+//       }
+//     );
+
+//     return updatedEvent;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+// // ============================== DELETE EVENT
+// // ============================== DELETE EVENT
+// export async function deleteEvent(eventId?: string) {
+//   if (!eventId) return;
+
+//   try {
+//     await databases.deleteDocument(
+//       appwriteConfig.databaseId,
+//       appwriteConfig.eventsCollectionId,
+//       eventId
+//     );
+
+//     return { status: "Ok" };
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+

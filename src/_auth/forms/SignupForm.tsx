@@ -1,19 +1,22 @@
-// Zod 
-import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/shared/Loader";
-import { createUserAccount } from "@/lib/appwrite/api";
-import { SignupValidation } from "@/lib/validation";
 import { useToast } from "@/components/ui/use-toast";
+
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queries";
+import { SignupValidation } from "@/lib/validation";
+import { useUserContext } from "@/context/AuthContext";
 
 const SignupForm = () => {
   const { toast } = useToast();
-  const isLoading = false;
+  const navigate = useNavigate();
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
@@ -25,31 +28,71 @@ const SignupForm = () => {
     },
   });
 
-  // Define a submit handler.
-  async function onSubmit(values: z.infer<typeof SignupValidation>) {
-    const newUser = await createUserAccount(values);
-    if (!newUser) {
-      return toast({ title: "Falha ao cadastrar. Tente novamente mais tarde." });
+  // Queries
+  const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } = useCreateUserAccount();
+  const { mutateAsync: signInAccount, isLoading: isSigningInUser } = useSignInAccount();
+
+  // Handler
+  const handleSignup = async (user: z.infer<typeof SignupValidation>) => {
+    try {
+      const newUser = await createUserAccount(user);
+
+      if (!newUser) {
+        toast({ title: "Sign up failed. Please try again.", });
+        
+        return;
+      }
+
+      const session = await signInAccount({
+        email: user.email,
+        password: user.password,
+      });
+
+      if (!session) {
+        toast({ title: "Something went wrong. Please login your new account", });
+        
+        navigate("/sign-in");
+        
+        return;
+      }
+
+      const isLoggedIn = await checkAuthUser();
+
+      if (isLoggedIn) {
+        form.reset();
+
+        navigate("/");
+      } else {
+        toast({ title: "Login failed. Please try again.", });
+        
+        return;
+      }
+    } catch (error) {
+      console.log({ error });
     }
-    // Additional logic can be added here if needed.
-  }
+  };
 
   return (
     <Form {...form}>
       <div className="sm:w-420 flex-center flex-col">
-        <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">Criar uma nova conta</h2>
+      <img src="/assets/icons/logo-form.svg" alt="logo" width="300" />
+
+        <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
+          Crie uma conta nova
+        </h2>
         <p className="text-light-3 small-medium md:base-regular mt-2">
-          Utilize seu nome e senha para iniciar sua sessão.
+          Construa laços, compartilhe sorrisos.
         </p>
 
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full mt-4">
-          {/* Nome */}
+        <form
+          onSubmit={form.handleSubmit(handleSignup)}
+          className="flex flex-col gap-5 w-full mt-4">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nome</FormLabel>
+                <FormLabel className="shad-form_label">Nome</FormLabel>
                 <FormControl>
                   <Input type="text" className="shad-input" {...field} />
                 </FormControl>
@@ -58,13 +101,12 @@ const SignupForm = () => {
             )}
           />
 
-          {/* Usuário */}
           <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Usuário</FormLabel>
+                <FormLabel className="shad-form_label">Nome de Usuário</FormLabel>
                 <FormControl>
                   <Input type="text" className="shad-input" {...field} />
                 </FormControl>
@@ -73,28 +115,26 @@ const SignupForm = () => {
             )}
           />
 
-          {/* E-mail */}
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>E-mail</FormLabel>
+                <FormLabel className="shad-form_label">Email</FormLabel>
                 <FormControl>
-                  <Input type="email" className="shad-input" {...field} />
+                  <Input type="text" className="shad-input" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          {/* Senha */}
           <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Senha</FormLabel>
+                <FormLabel className="shad-form_label">Senha</FormLabel>
                 <FormControl>
                   <Input type="password" className="shad-input" {...field} />
                 </FormControl>
@@ -104,7 +144,7 @@ const SignupForm = () => {
           />
 
           <Button type="submit" className="shad-button_primary">
-            {isLoading ? (
+            {isCreatingAccount || isSigningInUser || isUserLoading ? (
               <div className="flex-center gap-2">
                 <Loader /> Carregando
               </div>
@@ -115,7 +155,9 @@ const SignupForm = () => {
 
           <p className="text-small-regular text-light-2 text-center mt-2">
             Possui uma conta?
-            <Link to="/sign-in" className="text-primary-500 text-small-semibold ml-1">
+            <Link
+              to="/sign-in"
+              className="text-primary-500 text-small-semibold ml-1">
               Entre
             </Link>
           </p>
