@@ -2,7 +2,7 @@
 **Este é um site que eu fiz com o propósito de divulgar os materiais do curso.**
 
 <p align="center">
-  <img src="image-readme.png" alt="Evatech Logo" width="500"/>
+  <img src="public/assets/images/logo.svg" alt="Evatech Logo" width="500"/>
 </p>
 
 ## Sobre o Projeto
