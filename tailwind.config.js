@@ -75,6 +75,7 @@ module.exports = {
         'background-home': "url('/assets/images/backgroundapp.svg')",
         'card-background': "url('/assets/images/card2.svg')",
         'background-users': "url('/assets/images/background-2.svg')",
+        'background-thin': "url('/assets/images/background-thin.svg')",
       },
     },
   },
