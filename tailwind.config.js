@@ -33,7 +33,7 @@ module.exports = {
         'off-white': '#D0DFFF',
         'red': '#FF5A5A',
         'dark-1': '#000000',
-        'dark-2': '#FAFCF1',
+        'dark-2': '#FFFFFF',
         'dark-3': '#101012',
         'dark-4': '#ffff',
         'light-1': '#FFFFFF',
@@ -71,11 +71,13 @@ module.exports = {
       },
       backgroundImage: {
         // 'left-img-FULL': "url('/assets/images/background-auth-FULL.svg')",
+        
         'left-img-FULL': "url('/assets/images/background-auth3.svg')",
         'background-home': "url('/assets/images/backgroundapp.svg')",
         'card-background': "url('/assets/images/card2.svg')",
         'background-users': "url('/assets/images/background-2.svg')",
         'background-thin': "url('/assets/images/background-thin.svg')",
+        'background-post' : "url('/assets/images/background-post-card.svg')"
       },
     },
   },

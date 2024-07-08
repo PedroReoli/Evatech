@@ -45,7 +45,7 @@ const PostDetails = () => {
             width={24}
             height={24}
           />
-          <p className="small-medium lg:base-medium">Back</p>
+          <p className="small-medium lg:base-medium">Voltar</p>
         </Button>
       </div>
 
@@ -63,17 +63,17 @@ const PostDetails = () => {
             <div className="flex-between w-full">
               <Link
                 to={`/profile/${post?.creator.$id}`}
-                className="flex items-center gap-3">
+                className="flex items-center gap-3 ">
                 <img
                   src={
                     post?.creator.imageUrl ||
                     "/assets/icons/profile-placeholder.svg"
                   }
                   alt="creator"
-                  className="w-8 h-8 lg:w-12 lg:h-12 rounded-full"
+                  className="w-8 h-8 lg:w-12 lg:h-12 rounded-full "
                 />
                 <div className="flex gap-1 flex-col">
-                  <p className="base-medium lg:body-bold text-light-1">
+                  <p className="base-medium lg:body-bold text-black">
                     {post?.creator.name}
                   </p>
                   <div className="flex-center gap-2 text-light-3">
@@ -116,7 +116,7 @@ const PostDetails = () => {
               </div>
             </div>
 
-            <hr className="border w-full border-dark-4/80" />
+            <hr className="border w-full border-purple-1" />
 
             <div className="flex flex-col flex-1 w-full small-medium lg:base-regular">
               <p>{post?.caption}</p>
@@ -139,10 +139,10 @@ const PostDetails = () => {
       )}
 
       <div className="w-full max-w-5xl">
-        <hr className="border w-full border-dark-4/80" />
+        <hr className="border w-full border-purple-1" />
 
         <h3 className="body-bold md:h3-bold w-full my-10">
-          More Related Posts
+          Mais Conteudo
         </h3>
         {isUserPostLoading || !relatedPosts ? (
           <Loader />
