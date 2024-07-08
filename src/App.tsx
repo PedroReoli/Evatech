@@ -1,36 +1,55 @@
-import { Routes, Route } from 'react-router-dom';
+// Private Imports
+import {
+  Home,
+  Explore,
+  Saved,
+  CreatePost,
+  AllUsers,
+  Profile,
+  UpdateProfile,
+  EditPost,
+  PostDetails,
+} from "@/_root/pages";
+// import Events from "./_root/pages/Events";
+// import CreateEvent from "./_root/pages/CreateEvent";
+// Routes Imports
+import SigninForm from './_auth/forms/SigninForm'
+import SignupForm from './_auth/forms/SignupForm'
+import { Routes,Route } from 'react-router-dom';  
+import AuthLayout from './_auth/AuthLayout'
+import RootLayout from './_root/RootLayout' 
+import { Toaster } from "@/components/ui/toaster";
+// Style Import
 import './globals.css';
-// Autenticação 
-import SigninForm  from './_auth/forms/SigninForm';
-import SignupForm from './_auth/forms/SignupForm';
-import AuthLayout from './_auth/AuthLayout';
-
-// TOAST component 
-import { Toaster } from '@/components/ui/toaster';
-
-// Páginas 
-// Devido ao index.ts ,agora dá para importar mais facil 
-// fica assim agora {pagina1,pagina2,pagina3} from  './_root/pages/'
-import { Home } from './_root/pages/';
-import RootLayout from './_root/RootLayout';
 const App = () => {
   return (
-    <main className='flex h-screen'>
+    <main className='flex h-screen bg-'>
         <Routes>
-            {/* Rotas Públicas  - Sem login */}
-            <Route element={<AuthLayout />}>    {/* Páginas Sobrepostas */}
-                <Route path="/sign-in" element={<SigninForm/>}/>   
-                <Route path="/sign-up" element={<SignupForm/>}/>  
+            {/* public routes */}
+            <Route element ={<AuthLayout />}>
+              <Route path="/sign-up" element={<SignupForm />} /> 
+              <Route path="/sign-in" element={<SigninForm />} /> 
             </Route>
-            {/* Rotas Privadas  - Com Login */}
-            <Route element={<RootLayout />}>    {/* Páginas Sobrepostas */}
-                 <Route index element={<Home/>}/>    
+
+            {/* private routes */}
+            <Route element={<RootLayout />}>
+              <Route index element={<Home />} />
+              <Route path="/explore" element={<Explore />} />
+              <Route path="/saved" element={<Saved />} />
+              <Route path="/all-users" element={<AllUsers />} />
+              <Route path="/create-post" element={<CreatePost />} />
+              {/* <Route path="/events" element={<Events />} /> */}
+              {/* <Route path="/create-event" element={<CreateEvent />} /> */}
+              <Route path="/update-post/:id" element={<EditPost />} />
+              <Route path="/posts/:id" element={<PostDetails />} />
+              <Route path="/profile/:id/*" element={<Profile />} />
+              <Route path="/update-profile/:id" element={<UpdateProfile />} />
             </Route>
         </Routes>
-        <Toaster/>
-    </main>    
 
-)
+      <Toaster/>
+    </main>
+  )
 }
 
 export default App
