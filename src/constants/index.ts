@@ -7,28 +7,24 @@ export const sidebarLinks = [
     {
       imgURL: "/assets/icons/people.svg",
       route: "/all-users",
-      label: "People",
+      label: "Participantes",
     },
     {
       imgURL: "/assets/icons/wallpaper.svg",
       route: "/explore",
-      label: "Explorar",
+      label: "Material",
     },
     {
       imgURL: "/assets/icons/bookmark.svg",
       route: "/saved",
-      label: "Salvos",
+      label: "Concluído",
     },
     {
       imgURL: "/assets/icons/gallery-add.svg",
       route: "/create-post",
       label: "Postar",
     },
-    // {
-    //   imgURL: "/assets/icons/month-events.svg",
-    //   route: "/events",
-    //   label: "Eventos do Mês",
-    // },
+   
   
   ];
   
@@ -41,28 +37,24 @@ export const sidebarLinks = [
     {
       imgURL: "/assets/icons/people.svg",
       route: "/all-users",
-      label: "People",
+      label: "Participantes",
     },
     {
       imgURL: "/assets/icons/wallpaper.svg",
       route: "/explore",
-      label: "Explorar",
+      label: "Material",
     },
     {
       imgURL: "/assets/icons/bookmark.svg",
       route: "/saved",
-      label: "Salvos",
+      label: "Concluído",
     },
     {
       imgURL: "/assets/icons/gallery-add.svg",
       route: "/create-post",
       label: "Postar",
     },
-    // {
-    //   imgURL: "/assets/icons/month-events.svg",
-    //   route: "/events",
-    //   label: "Eventos do Mês",
-    // },
+   
   
   ];
   

@@ -45,7 +45,8 @@ const Home = () => {
 
   return (
     <div className="flex flex-1">
-      <div className="home-container">
+      {/* o fundo do home  */}
+      <div className="home-container bg-background-home ">
         <div className="home-posts">
           <h2 className="h3-bold md:h2-bold text-left w-full">Feed</h2>
           {isPostLoading && !posts ? (
@@ -62,9 +63,9 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="home-creators">
-          <h3 className="h3-bold text-light-1">Peoples do Mês</h3>
-        <div className="flex gap-1 px-4 w-full rounded-lg bg-dark-4">
+      <div className="home-creators bg-background-users">
+          <h3 className="h3-bold text-black">Familia Evatech</h3>
+        <div className="flex gap-1 px-4 w-full rounded-lg bg-dark-4  explore-father-search">
           <img
             width={24}
             src="/assets/icons/search.svg"

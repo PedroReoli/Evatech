@@ -24,14 +24,16 @@ module.exports = {
     extend: {
       colors: {
         // links e botao
-        'primary-500': '#8C429D', 
+        'primary-500': '#8C429D',
+        // cor do card
+        'background-card-color': '#F1EEDD', 
 
         'primary-600': '#FF5A5A', 
         'secondary-500': '#FFB620',
         'off-white': '#D0DFFF',
         'red': '#FF5A5A',
         'dark-1': '#000000',
-        'dark-2': '#09090A',
+        'dark-2': '#FAFCF1',
         'dark-3': '#101012',
         'dark-4': '#ffff',
         'light-1': '#FFFFFF',
@@ -70,6 +72,9 @@ module.exports = {
       backgroundImage: {
         // 'left-img-FULL': "url('/assets/images/background-auth-FULL.svg')",
         'left-img-FULL': "url('/assets/images/background-auth3.svg')",
+        'background-home': "url('/assets/images/backgroundapp.svg')",
+        'card-background': "url('/assets/images/card2.svg')",
+        'background-users': "url('/assets/images/background-2.svg')",
       },
     },
   },

@@ -9,7 +9,7 @@ type UserCardProps = {
 
 const UserCard = ({ user }: UserCardProps) => {
   return (
-    <Link to={`/profile/${user.$id}`} className="user-card">
+    <Link to={`/profile/${user.$id}`} className="user-card bg-card-background bg-no-repeat bg-cover bg-background-card-color ">
       <img
         src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
         alt="creator"
@@ -17,10 +17,10 @@ const UserCard = ({ user }: UserCardProps) => {
       />
 
       <div className="flex-center flex-col gap-1">
-        <p className="base-medium text-light-1 text-center line-clamp-1">
+        <p className="base-medium text-black text-center line-clamp-1">
           {user.name}
         </p>
-        <p className="small-regular text-light-3 text-center line-clamp-1">
+        <p className="small-regular text-light-4 text-center line-clamp-1">
           @{user.username}
         </p>
       </div>

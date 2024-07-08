@@ -22,10 +22,10 @@ const AllUsers = () => {
   ) || [];
 
   return (
-    <div className="common-container">
+    <div className="common-container  bg-background-home">
       <div className="user-container">
-        <h2 className="h3-bold md:h2-bold text-left w-full">People</h2>
-        <div className="flex gap-1 px-4 w-full rounded-lg bg-dark-4">
+        <h2 className="h3-bold md:h2-bold text-left w-full">Da nossa família</h2>
+        <div className="flex gap-1 px-4 w-full rounded-lg bg-dark-4 explore-father-search">
           <img
             width={24}
             src="/assets/icons/search.svg"
@@ -35,7 +35,7 @@ const AllUsers = () => {
           <Input
             type="text"
             placeholder="Pesquisar usuário"
-            className="explore-search"
+            className="explore-search "
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
           />

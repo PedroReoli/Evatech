@@ -25,11 +25,11 @@ const LeftSidebar = () => {
   };
 
   return (
-    <nav className="leftsidebar">
+    <nav className="leftsidebar bg-left-img-FULL">
       <div className="flex flex-col gap-11">
         <Link to="/" className="flex gap-3 items-center">
           <img
-          src="/assets/icons/logo-form.svg"
+          src="/assets/images/logo.svg"
             alt="logo"
             width={250}
             height={36}
