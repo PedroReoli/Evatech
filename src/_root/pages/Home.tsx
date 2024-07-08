@@ -48,7 +48,7 @@ const Home = () => {
       {/* o fundo do home  */}
       <div className="home-container bg-background-home ">
         <div className="home-posts">
-          <h2 className="h3-bold md:h2-bold text-left w-full">Feed</h2>
+          <h2 className="h3-bold md:h2-bold text-left w-full">Mural</h2>
           {isPostLoading && !posts ? (
             <Loader />
           ) : (
