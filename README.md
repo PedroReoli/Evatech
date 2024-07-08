@@ -27,9 +27,6 @@ Este projeto é realizado em parceria com:
 - **Eu Pratico Esperança**: Uma iniciativa do Projeto Vida.
 
 
-## Licença
-
-Este projeto é licenciado sob a [Licença MIT](LICENSE).
 
 ---
 
