@@ -1,7 +1,7 @@
 # Evatech
 **Este é um site que eu fiz com o propósito de divulgar os materiais do curso.**
 
-![Evatech Logo](public\assets\images\logo.png)
+![Evatech Logo](\assets\images\logo.png)
 
 ## Sobre o Projeto
 
