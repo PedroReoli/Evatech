@@ -83,7 +83,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
           name="caption"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="shad-form_label">Caption</FormLabel>
+              <FormLabel className="shad-form_label">Descrição</FormLabel>
               <FormControl>
                 <Textarea
                   className="shad-textarea custom-scrollbar"
@@ -100,7 +100,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
           name="file"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="shad-form_label">Add Photos</FormLabel>
+              <FormLabel className="shad-form_label">Adcionar</FormLabel>
               <FormControl>
                 <FileUploader
                   fieldChange={field.onChange}
@@ -117,9 +117,12 @@ const PostForm = ({ post, action }: PostFormProps) => {
           name="location"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="shad-form_label">Add Location</FormLabel>
+              <FormLabel className="shad-form_label">Credenciais do Material</FormLabel>
               <FormControl>
-                <Input type="text" className="shad-input" {...field} />
+                <Input 
+                  placeholder="Aula (n* ): 'conteudo' "
+                type="text" className="shad-input" {...field} />
+                
               </FormControl>
               <FormMessage className="shad-form_message" />
             </FormItem>
@@ -132,11 +135,11 @@ const PostForm = ({ post, action }: PostFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="shad-form_label">
-                Add Tags (separated by comma " , ")
+                Adcionar Tags (separadas por virgula  " , ")
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Art, Expression, Learn"
+                  placeholder="Conhecendo a Internet, Criação De Curriculo , Excel ..."
                   type="text"
                   className="shad-input"
                   {...field}

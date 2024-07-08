@@ -41,7 +41,7 @@ const Profile = () => {
     );
 
   return (
-    <div className="profile-container">
+    <div className="profile-container bg-background-home">
       <div className="profile-inner_container">
         <div className="flex xl:flex-row flex-col max-xl:items-center flex-1 gap-7">
           <img
@@ -63,8 +63,6 @@ const Profile = () => {
 
             <div className="flex gap-8 mt-10 items-center justify-center xl:justify-start flex-wrap z-20">
               <StatBlock value={currentUser.posts.length} label="Posts" />
-              <StatBlock value={20} label="Followers" />
-              <StatBlock value={20} label="Following" />
             </div>
 
             <p className="small-medium md:base-medium text-center xl:text-left mt-7 max-w-screen-sm">
@@ -72,11 +70,11 @@ const Profile = () => {
             </p>
           </div>
 
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-4 ">
             <div className={`${user.id !== currentUser.$id && "hidden"}`}>
               <Link
                 to={`/update-profile/${currentUser.$id}`}
-                className={`h-12 bg-dark-4 px-5 text-light-1 flex-center gap-2 rounded-lg ${
+                className={`h-12 bg-purple-1 px-5 text-light-1 flex-center gap-2 rounded-lg ${
                   user.id !== currentUser.$id && "hidden"
                 }`}>
                 <img
@@ -85,7 +83,7 @@ const Profile = () => {
                   width={20}
                   height={20}
                 />
-                <p className="flex whitespace-nowrap small-medium">
+                <p className="flex whitespace-nowrap small-medium text-white ">
                   Edit Profile
                 </p>
               </Link>
@@ -104,7 +102,7 @@ const Profile = () => {
           <Link
             to={`/profile/${id}`}
             className={`profile-tab rounded-l-lg ${
-              pathname === `/profile/${id}` && "!bg-dark-3"
+              pathname === `/profile/${id}` && "!bg-white "
             }`}>
             <img
               src={"/assets/icons/posts.svg"}
@@ -115,9 +113,9 @@ const Profile = () => {
             Posts
           </Link>
           <Link
-            to={`/profile/${id}/liked-posts`}
+            to={`/profile/${id}/liked-posts `}
             className={`profile-tab rounded-r-lg ${
-              pathname === `/profile/${id}/liked-posts` && "!bg-dark-3"
+              pathname === `/profile/${id}/liked-posts` && "!border-2 border-purple-1"
             }`}>
             <img
               src={"/assets/icons/like.svg"}
@@ -125,7 +123,7 @@ const Profile = () => {
               width={20}
               height={20}
             />
-            Liked Posts
+            Concluído
           </Link>
         </div>
       )}
