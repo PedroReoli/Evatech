@@ -15,13 +15,13 @@ const Topbar = () => {
   }, [isSuccess]);
 
   return (
-    <section className="topbar">
+    <section className="topbar bg-background-thin">
       <div className="flex-between py-4 px-5">
         <Link to="/" className="flex gap-3 items-center">
           <img
-            src="/assets/icons/logo-form.svg"
+            src="/assets/images/logo.svg"
             alt="logo"
-            width={130}
+            width={180}
             height={325}
           />
         </Link>
