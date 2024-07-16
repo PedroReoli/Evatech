@@ -11,11 +11,14 @@ import {
 } from "@/lib/react-query/queries";
 import { multiFormatDateString } from "@/lib/utils";
 import { useUserContext } from "@/context/AuthContext";
+import { appwriteConfig } from "@/lib/appwrite/config";
+import { useState, useEffect } from "react";
 
 const PostDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useUserContext();
+  const [fileId, setFileId] = useState(''); // Adicionado estado para armazenar o ID do arquivo
 
   const { data: post, isLoading } = useGetPostById(id);
   const { data: userPosts, isLoading: isUserPostLoading } = useGetUserPosts(
@@ -27,10 +30,18 @@ const PostDetails = () => {
     (userPost) => userPost.$id !== id
   );
 
+  useEffect(() => {
+    if (post) {
+      setFileId(post.imageId); // Ajuste conforme a necessidade
+    }
+  }, [post]);
+
   const handleDeletePost = () => {
     deletePost({ postId: id, imageId: post?.imageId });
     navigate(-1);
   };
+
+  const fileUrl = `https://cloud.appwrite.io/v1/storage/buckets/${appwriteConfig.storageId}/files/${fileId}/view?project=${appwriteConfig.projectId}&mode=admin`;
 
   return (
     <div className="post_details-container">
@@ -129,6 +140,18 @@ const PostDetails = () => {
                   </li>
                 ))}
               </ul>
+            </div>
+
+            {/* Botão para visualizar ou baixar o arquivo */}
+            <div className="w-full mt-4">
+              <a
+                href={fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+              >
+                Visualizar/Download do Arquivo
+              </a>
             </div>
 
             <div className="w-full">

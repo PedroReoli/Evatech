@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import PostStats  from "@/components/shared/PostStats";
 import { multiFormatDateString } from "@/lib/utils";
 import { useUserContext } from "@/context/AuthContext";
+import { appwriteConfig } from "@/lib/appwrite/config";
+import { useState, useEffect } from "react";
 
 type PostCardProps = {
   post: Models.Document;
@@ -11,8 +13,17 @@ type PostCardProps = {
 
 const PostCard = ({ post }: PostCardProps) => {
   const { user } = useUserContext();
+  const [fileId, setFileId] = useState(''); // Adicionado estado para armazenar o ID do arquivo
+
+  useEffect(() => {
+    if (post) {
+      setFileId(post.imageId); // Ajuste conforme a necessidade
+    }
+  }, [post]);
 
   if (!post.creator) return;
+
+  const fileUrl = `https://cloud.appwrite.io/v1/storage/buckets/${appwriteConfig.storageId}/files/${fileId}/view?project=${appwriteConfig.projectId}&mode=admin`;
 
   return (
     <div className="post-card">
@@ -77,6 +88,18 @@ const PostCard = ({ post }: PostCardProps) => {
       </Link>
 
       <PostStats post={post} userId={user.id} />
+
+      {/* Botão para visualizar ou baixar o arquivo */}
+      <div className="w-full mt-4">
+        <a
+          href={fileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-primary"
+        >
+          Visualizar/Download do Arquivo
+        </a>
+      </div>
     </div>
   );
 };
