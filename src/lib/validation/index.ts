@@ -4,21 +4,21 @@ import * as z from "zod";
 // USER
 // ============================================================
 export const SignupValidation = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  username: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  name: z.string().min(2, { message: "O nome precisa ter no mínimo 2 caracteres." }),
+  username: z.string().min(2, { message: "O nome de usuário precisa ter no mínimo 2 caracteres." }),
   email: z.string().email(),
-  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
+  password: z.string().min(8, { message: "A senha precisa ter no mínimo 8 caracteres." }),
 });
 
 export const SigninValidation = z.object({
   email: z.string().email(),
-  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
+  password: z.string().min(8, { message: "A senha precisa ter no mínimo 8 caracteres." }),
 });
 
 export const ProfileValidation = z.object({
   file: z.custom<File[]>(),
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  username: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  name: z.string().min(2, { message: "O nome de usuário precisa ter no mínimo 2" }),
+  username: z.string().min(2, { message: "O nome de usuário precisa ter no mínimo 2" }),
   email: z.string().email(),
   bio: z.string(),
 });
@@ -27,21 +27,9 @@ export const ProfileValidation = z.object({
 // POST
 // ============================================================
 export const PostValidation = z.object({
-  caption: z.string().min(5, { message: "Minimum 5 characters." }).max(2200, { message: "Maximum 2,200 caracters" }),
+  caption: z.string().min(5, { message: "No mínimo 5 caracteres" }).max(2200, { message: "No máximo 2000 caracteres" }),
   file: z.custom<File[]>(),
-  location: z.string().min(1, { message: "This field is required" }).max(1000, { message: "Maximum 1000 characters." }),
+  location: z.string().min(1, { message: "Este campo é obrigatório" }).max(1000, { message: "No máximo 1000 caracteres" }),
   tags: z.string(),
 });
 
-// ============================================================
-// EVENT
-// ============================================================
-
-export const EventValidation = z.object({
-  title: z.string().min(2, { message: "O titulo precisa ter no minimo 2 caracteres" }),
-  description: z.string().min(5, { message: "No minimo 5 caracteres" }),
-  date: z.string().min(1, { message: "Campo Obrigatório" }),
-  location: z.string().min(1, { message: "Campo Obrigatório" }),
-  users: z.string(), 
-  package: z.string(), 
-});
