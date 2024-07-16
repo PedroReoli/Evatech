@@ -41,15 +41,15 @@ export const multiFormatDateString = (timestamp: string = ""): string => {
     case Math.floor(diffInDays) >= 30:
       return formatDateString(timestamp);
     case Math.floor(diffInDays) === 1:
-      return `${Math.floor(diffInDays)} day ago`;
+      return `${Math.floor(diffInDays)} dias atrás`;
     case Math.floor(diffInDays) > 1 && diffInDays < 30:
-      return `${Math.floor(diffInDays)} days ago`;
+      return `${Math.floor(diffInDays)} dias atrás`;
     case Math.floor(diffInHours) >= 1:
-      return `${Math.floor(diffInHours)} hours ago`;
+      return `${Math.floor(diffInHours)} horas atrás`;
     case Math.floor(diffInMinutes) >= 1:
-      return `${Math.floor(diffInMinutes)} minutes ago`;
+      return `${Math.floor(diffInMinutes)} minutos atrás`;
     default:
-      return "Just now";
+      return "agora mesmo";
   }
 };
 
