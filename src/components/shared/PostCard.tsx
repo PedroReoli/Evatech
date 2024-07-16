@@ -6,6 +6,7 @@ import { multiFormatDateString } from "@/lib/utils";
 import { useUserContext } from "@/context/AuthContext";
 import { appwriteConfig } from "@/lib/appwrite/config";
 import { useState, useEffect } from "react";
+import { Button } from "../ui/button";
 
 type PostCardProps = {
   post: Models.Document;
@@ -13,11 +14,11 @@ type PostCardProps = {
 
 const PostCard = ({ post }: PostCardProps) => {
   const { user } = useUserContext();
-  const [fileId, setFileId] = useState(''); // Adicionado estado para armazenar o ID do arquivo
+  const [fileId, setFileId] = useState(''); 
 
   useEffect(() => {
     if (post) {
-      setFileId(post.imageId); // Ajuste conforme a necessidade
+      setFileId(post.imageId); 
     }
   }, [post]);
 
@@ -87,21 +88,20 @@ const PostCard = ({ post }: PostCardProps) => {
         />
       </Link>
 
-      <PostStats post={post} userId={user.id} />
-
-      {/* Botão para visualizar ou baixar o arquivo */}
-      <div className="w-full mt-4">
-        <a
-          href={fileUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-primary"
+      <div className="flex items-center justify-between w-full mt-4">
+        <PostStats post={post} userId={user.id} />
+        <Button
+          type="button"
+          size="sm"
+          className="shad-button_primary px-5"
+          onClick={() => window.open(fileUrl, '_blank')}
         >
-          Visualizar/Download do Arquivo
-        </a>
+          Download
+        </Button>
       </div>
     </div>
   );
 };
 
 export default PostCard;
+

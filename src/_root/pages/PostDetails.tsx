@@ -18,7 +18,7 @@ const PostDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useUserContext();
-  const [fileId, setFileId] = useState(''); // Adicionado estado para armazenar o ID do arquivo
+  const [fileId, setFileId] = useState(''); 
 
   const { data: post, isLoading } = useGetPostById(id);
   const { data: userPosts, isLoading: isUserPostLoading } = useGetUserPosts(
@@ -32,7 +32,7 @@ const PostDetails = () => {
 
   useEffect(() => {
     if (post) {
-      setFileId(post.imageId); // Ajuste conforme a necessidade
+      setFileId(post.imageId); 
     }
   }, [post]);
 
@@ -114,7 +114,7 @@ const PostDetails = () => {
                 <Button
                   onClick={handleDeletePost}
                   variant="ghost"
-                  className={`ost_details-delete_btn ${
+                  className={`post_details-delete_btn ${
                     user.id !== post?.creator.$id && "hidden"
                   }`}>
                   <img
@@ -142,20 +142,16 @@ const PostDetails = () => {
               </ul>
             </div>
 
-            {/* Botão para visualizar ou baixar o arquivo */}
-            <div className="w-full mt-4">
-              <a
-                href={fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary"
-              >
-                Visualizar/Download do Arquivo
-              </a>
-            </div>
-
-            <div className="w-full">
+            <div className="flex items-center justify-between w-full mt-4">
               <PostStats post={post} userId={user.id} />
+              <Button
+                type="button"
+                size="sm"
+                className="shad-button_primary px-5"
+                onClick={() => window.open(fileUrl, '_blank')}
+              >
+                Download
+              </Button>
             </div>
           </div>
         </div>
