@@ -247,25 +247,3 @@ export const useUpdateUser = () => {
     },
   });
 };
-
-// ============================================================
-// EVENT QUERIES
-// ============================================================
-
-// export const useGetEvents = () => {
-//   return useQuery({
-//     queryKey: [QUERY_KEYS.GET_EVENTS],
-//     queryFn: getEvents,
-//   });
-// };
-// export const useCreateEvent = () => {
-//   const queryClient = useQueryClient();
-//   return useMutation({
-//     mutationFn: (event: INewEvent) => createEvent(event),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({
-//         queryKey: [QUERY_KEYS.GET_EVENTS],
-//       });
-//     },
-//   });
-// };

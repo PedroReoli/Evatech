@@ -170,15 +170,16 @@ export async function uploadFile(file: File) {
       ID.unique(),
       file
     );
-
+    console.log('File uploaded successfully:', uploadedFile);
     return uploadedFile;
   } catch (error) {
-    console.log(error);
+    console.error('Error uploading file:', error);
+    throw error; // Re-throw the error after logging it
   }
 }
 
 // ============================== GET FILE URL
-export function getFilePreview(fileId: string) {
+export function getFilePreview(fileId: string): string {
   try {
     const fileUrl = storage.getFilePreview(
       appwriteConfig.storageId,
@@ -187,13 +188,15 @@ export function getFilePreview(fileId: string) {
       2000,
       "top",
       100
-    );
+    ).href;
 
-    if (!fileUrl) throw Error;
+    if (!fileUrl) throw new Error('Failed to get file URL');
 
+    console.log('File URL retrieved successfully:', fileUrl);
     return fileUrl;
   } catch (error) {
-    console.log(error);
+    console.error('Error getting file URL:', error);
+    return '';
   }
 }
 
@@ -272,29 +275,29 @@ export async function updatePost(post: IUpdatePost) {
 
   try {
     let image = {
-      imageUrl: post.imageUrl,
+      imageUrl: post.imageUrl as unknown as string,
       imageId: post.imageId,
     };
 
     if (hasFileToUpdate) {
-      // Upload new file to appwrite storage
+      // Upload new file to Appwrite storage
       const uploadedFile = await uploadFile(post.file[0]);
       if (!uploadedFile) throw Error;
 
-      // Get new file url
+      // Get new file URL
       const fileUrl = getFilePreview(uploadedFile.$id);
       if (!fileUrl) {
         await deleteFile(uploadedFile.$id);
         throw Error;
       }
 
-      image = { ...image, imageUrl: fileUrl, imageId: uploadedFile.$id };
+      image = { imageUrl: fileUrl, imageId: uploadedFile.$id };
     }
 
     // Convert tags into array
     const tags = post.tags?.replace(/ /g, "").split(",") || [];
 
-    //  Update post
+    // Update post
     const updatedPost = await databases.updateDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,

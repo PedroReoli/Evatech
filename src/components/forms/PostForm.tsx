@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { Models } from "appwrite";
+import { ID, Models } from "appwrite";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,12 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-
 import { PostValidation } from "@/lib/validation";
 import { useToast } from "@/components/ui/use-toast";
 import { useUserContext } from "@/context/AuthContext";
 import { FileUploader, Loader } from "@/components/shared/";
 import { useCreatePost, useUpdatePost } from "@/lib/react-query/queries";
+import { appwriteConfig, storage } from "@/lib/appwrite/config";
+
 
 type PostFormProps = {
   post?: Models.Document;
@@ -35,49 +36,74 @@ const PostForm = ({ post, action }: PostFormProps) => {
   });
 
   // Query
-  const { mutateAsync: createPost, isLoading: isLoadingCreate } =
-    useCreatePost();
-  const { mutateAsync: updatePost, isLoading: isLoadingUpdate } =
-    useUpdatePost();
+  const { mutateAsync: createPost, isLoading: isLoadingCreate } = useCreatePost();
+  const { mutateAsync: updatePost, isLoading: isLoadingUpdate } = useUpdatePost();
 
   // Handler
   const handleSubmit = async (value: z.infer<typeof PostValidation>) => {
-    // ACTION = UPDATE
-    if (post && action === "Update") {
-      const updatedPost = await updatePost({
+    // Prepare file upload
+    const file = value.file[0];
+    if (!file) {
+      toast({ title: "Por favor, adicione um arquivo." });
+      return;
+    }
+
+    try {
+      const imageId = ID.unique(); // Use ID.unique() para gerar um identificador único válido
+      console.log('Generated imageId:', imageId);
+
+      const uploadedFile = await storage.createFile(appwriteConfig.storageId, imageId, file);
+      console.log('Uploaded file:', uploadedFile);
+
+      const imageUrl = storage.getFileView(appwriteConfig.storageId, imageId).href;
+      console.log('Generated imageUrl:', imageUrl);
+
+      if (!uploadedFile || !imageUrl) {
+        throw new Error('File upload failed or URL generation failed');
+      }
+
+      // ACTION = UPDATE
+      if (post && action === "Update") {
+        const updatedPost = await updatePost({
+          ...value,
+          postId: post.$id,
+          imageId: imageId,
+          imageUrl: imageUrl,
+        });
+
+        if (!updatedPost) {
+          toast({
+            title: `${action} post failed. Please try again.`,
+          });
+        }
+        return navigate(`/posts/${post.$id}`);
+      }
+
+      // ACTION = CREATE
+      const newPost = await createPost({
         ...value,
-        postId: post.$id,
-        imageId: post.imageId,
-        imageUrl: post.imageUrl,
+        userId: user.id,
+        imageId: imageId,
+        imageUrl: imageUrl,
       });
 
-      if (!updatedPost) {
+      if (!newPost) {
         toast({
           title: `${action} post failed. Please try again.`,
         });
       }
-      return navigate(`/posts/${post.$id}`);
+      navigate("/");
+    } catch (error) {
+      console.error('Error during submission:', error);
+      toast({ title: "Falha no upload do arquivo. Tente novamente." });
     }
-
-    // ACTION = CREATE
-    const newPost = await createPost({
-      ...value,
-      userId: user.id,
-    });
-
-    if (!newPost) {
-      toast({
-        title: `${action} post failed. Please try again.`,
-      });
-    }
-    navigate("/");
   };
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="flex flex-col gap-9 w-full  max-w-5xl">
+        className="flex flex-col gap-9 w-full max-w-5xl">
         <FormField
           control={form.control}
           name="caption"
@@ -100,11 +126,11 @@ const PostForm = ({ post, action }: PostFormProps) => {
           name="file"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="shad-form_label">Adcionar</FormLabel>
+              <FormLabel className="shad-form_label">Adicionar</FormLabel>
               <FormControl>
                 <FileUploader
                   fieldChange={field.onChange}
-                  mediaUrl={post?.imageUrl}
+                  mediaUrl={post?.imageUrl as unknown as string}
                 />
               </FormControl>
               <FormMessage className="shad-form_message" />
@@ -121,8 +147,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
               <FormControl>
                 <Input 
                   placeholder="Aula (n* ): 'conteudo' "
-                type="text" className="shad-input" {...field} />
-                
+                  type="text" className="shad-input" {...field} />
               </FormControl>
               <FormMessage className="shad-form_message" />
             </FormItem>
@@ -135,7 +160,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="shad-form_label">
-                Adcionar Tags (separadas por virgula  " , ")
+                Adicionar Tags (separadas por virgula  " , ")
               </FormLabel>
               <FormControl>
                 <Input

@@ -19,13 +19,14 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
       fieldChange(acceptedFiles);
       setFileUrl(convertFileToUrl(acceptedFiles[0]));
     },
-    [file]
+    []
   );
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
       "image/*": [".png", ".jpeg", ".jpg"],
+      "application/pdf": [".pdf"],
     },
   });
 
@@ -38,9 +39,13 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
       {fileUrl ? (
         <>
           <div className="flex flex-1 justify-center w-full p-5 lg:p-10">
-            <img src={fileUrl} alt="image" className="file_uploader-img" />
+            {file[0].type === "application/pdf" ? (
+              <embed src={fileUrl} width="100%" height="600px" type="application/pdf" />
+            ) : (
+              <img src={fileUrl} alt="uploaded file" className="file_uploader-img" />
+            )}
           </div>
-          <p className="file_uploader-label">Clique ou arraste uma foto</p>
+          <p className="file_uploader-label">Clique ou arraste uma foto ou PDF</p>
         </>
       ) : (
         <div className="file_uploader-box ">
@@ -52,9 +57,9 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
           />
 
           <h3 className="base-medium text-light-2 mb-2 mt-6">
-            Coloque sua foto aqui
+            Coloque seu arquivo aqui
           </h3>
-          <p className="text-light-4 small-regular mb-6">SVG, PNG, JPG</p>
+          <p className="text-light-4 small-regular mb-6">SVG, PNG, JPG, PDF</p>
 
           <Button type="button" className="shad-button_dark_4">
             Selecionar nos arquivos locais

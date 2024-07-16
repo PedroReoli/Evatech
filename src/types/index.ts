@@ -19,18 +19,19 @@ export type INewPost = {
   file: File[];
   location?: string;
   tags?: string;
+  imageId: string; // Adicione esta linha
+  imageUrl: string; // Adicione esta linha
 };
 
 export type IUpdatePost = {
   postId: string;
   caption: string;
-  imageId: string;
-  imageUrl: URL;
+  imageId: string; // Adicione esta linha
+  imageUrl: string; // Adicione esta linha
   file: File[];
   location?: string;
   tags?: string;
 };
-
 export type IUser = {
   id: string;
   name: string;
