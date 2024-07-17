@@ -81,7 +81,7 @@ const SignupForm = () => {
           Crie uma conta nova
         </h2>
         <p className="text-light-3 small-medium md:base-regular mt-2">
-          ( COLOCAR UM LEMA DO PROJETO )
+         Empoderando Mulheres, Transformando Vidas
         </p>
 
         <form
