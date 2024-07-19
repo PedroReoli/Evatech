@@ -1,3 +1,4 @@
+// Importing necessary modules and components from libraries and local files
 import {
   Route,
   Routes,
@@ -6,32 +7,39 @@ import {
   useParams,
   useLocation,
 } from "react-router-dom";
-
 import { LikedPosts } from "@/_root/pages";
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUserById } from "@/lib/react-query/queries";
-import  GridPostList from  "@/components/shared/GridPostList";
-import {  Loader } from "@/components/shared";
+import GridPostList from "@/components/shared/GridPostList";
+import { Loader } from "@/components/shared";
 
-interface StabBlockProps {
+// Interface definition for the StatBlock component props
+interface StatBlockProps {
   value: string | number;
   label: string;
 }
 
-const StatBlock = ({ value, label }: StabBlockProps) => (
+// StatBlock component definition to display a statistic
+const StatBlock = ({ value, label }: StatBlockProps) => (
   <div className="flex-center gap-2">
     <p className="small-semibold lg:body-bold text-primary-500">{value}</p>
     <p className="small-medium lg:base-medium text-light-2">{label}</p>
   </div>
 );
 
+// Profile component definition
 const Profile = () => {
+  // Extracting the 'id' parameter from the URL
   const { id } = useParams();
+  // Getting the current user from the user context
   const { user } = useUserContext();
+  // Getting the current pathname from the location
   const { pathname } = useLocation();
 
+  // Fetching the user data by their ID
   const { data: currentUser } = useGetUserById(id || "");
 
+  // Show loader if user data is not available yet
   if (!currentUser)
     return (
       <div className="flex-center w-full h-full">
@@ -39,6 +47,7 @@ const Profile = () => {
       </div>
     );
 
+  // Render the profile page
   return (
     <div className="profile-container bg-background-home">
       <div className="profile-inner_container">
@@ -70,6 +79,7 @@ const Profile = () => {
           </div>
 
           <div className="flex justify-center gap-4 ">
+            {/* Edit profile button, shown only to the current user */}
             <div className={`${user.id !== currentUser.$id && "hidden"}`}>
               <Link
                 to={`/update-profile/${currentUser.$id}`}
@@ -88,12 +98,13 @@ const Profile = () => {
               </Link>
             </div>
             <div className={`${user.id === id && "hidden"}`}>
-              
+              {/* Additional actions for other users could be added here */}
             </div>
           </div>
         </div>
       </div>
 
+      {/* Tabs for navigating between posts and liked posts, shown only to the current user */}
       {currentUser.$id === user.id && (
         <div className="flex max-w-5xl w-full">
           <Link
@@ -125,6 +136,7 @@ const Profile = () => {
         </div>
       )}
 
+      {/* Routes for displaying posts and liked posts */}
       <Routes>
         <Route
           index
@@ -139,4 +151,5 @@ const Profile = () => {
   );
 };
 
+// Exporting Profile component as default
 export default Profile;

@@ -1,3 +1,4 @@
+// Importing necessary modules and components from libraries and local files
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,20 +16,21 @@ import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import {  Loader } from "@/components/shared";
+import { Loader } from "@/components/shared";
 import ProfileUploader from "@/components/shared/ProfileUploader";
 
 import { ProfileValidation } from "@/lib/validation";
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUserById, useUpdateUser } from "@/lib/react-query/queries";
 
+// UpdateProfile component definition
 const UpdateProfile = () => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const { user, setUser } = useUserContext();
+  const { toast } = useToast(); // Hook for displaying toast notifications
+  const navigate = useNavigate(); // Hook for navigation
+  const { id } = useParams(); // Hook to get URL parameters
+  const { user, setUser } = useUserContext(); // Hook to get and set the current user context
   const form = useForm<z.infer<typeof ProfileValidation>>({
-    resolver: zodResolver(ProfileValidation),
+    resolver: zodResolver(ProfileValidation), // Using Zod schema for form validation
     defaultValues: {
       file: [],
       name: user.name,
@@ -39,10 +41,10 @@ const UpdateProfile = () => {
   });
 
   // Queries
-  const { data: currentUser } = useGetUserById(id || "");
-  const { mutateAsync: updateUser, isLoading: isLoadingUpdate } =
-    useUpdateUser();
+  const { data: currentUser } = useGetUserById(id || ""); // Fetching the user data by ID
+  const { mutateAsync: updateUser, isLoading: isLoadingUpdate } = useUpdateUser(); // Mutation for updating user
 
+  // Show loader if current user data is not available yet
   if (!currentUser)
     return (
       <div className="flex-center w-full h-full">
@@ -50,7 +52,7 @@ const UpdateProfile = () => {
       </div>
     );
 
-  // Handler
+  // Handler function to handle profile update
   const handleUpdate = async (value: z.infer<typeof ProfileValidation>) => {
     const updatedUser = await updateUser({
       userId: currentUser.$id,
@@ -73,9 +75,10 @@ const UpdateProfile = () => {
       bio: updatedUser?.bio,
       imageUrl: updatedUser?.imageUrl,
     });
-    return navigate(`/profile/${id}`);
+    return navigate(`/profile/${id}`); // Navigate to the user's profile
   };
 
+  // Render the UpdateProfile component
   return (
     <div className="flex flex-1">
       <div className="common-container bg-background-home">
@@ -201,4 +204,5 @@ const UpdateProfile = () => {
   );
 };
 
+// Exporting UpdateProfile component as default
 export default UpdateProfile;
