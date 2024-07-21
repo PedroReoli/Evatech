@@ -1,9 +1,9 @@
-// Importing necessary modules and components from libraries and local files
 import { useParams, Link, useNavigate } from "react-router-dom";
+
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/shared";
-import GridPostList from "@/components/shared/GridPostList";
-import PostStats from "@/components/shared/PostStats";
+import GridPostList  from "@/components/shared/GridPostList";
+import  PostStats  from "@/components/shared/PostStats";
 import {
   useGetPostById,
   useGetUserPosts,
@@ -14,51 +14,37 @@ import { useUserContext } from "@/context/AuthContext";
 import { appwriteConfig } from "@/lib/appwrite/config";
 import { useState, useEffect } from "react";
 
-// PostDetails component definition
 const PostDetails = () => {
-  // Navigation hook
   const navigate = useNavigate();
-  // Extracting the 'id' parameter from the URL
   const { id } = useParams();
-  // Getting the current user from the user context
   const { user } = useUserContext();
-  // State to store file ID
-  const [fileId, setFileId] = useState('');
+  const [fileId, setFileId] = useState(''); 
 
-  // Fetching the post data by its ID
   const { data: post, isLoading } = useGetPostById(id);
-  // Fetching posts created by the same user
   const { data: userPosts, isLoading: isUserPostLoading } = useGetUserPosts(
     post?.creator.$id
   );
-  // Hook to handle the delete post mutation
   const { mutate: deletePost } = useDeletePost();
 
-  // Filtering related posts, excluding the current post
   const relatedPosts = userPosts?.documents.filter(
     (userPost) => userPost.$id !== id
   );
 
-  // Effect to set file ID when post data is available
   useEffect(() => {
     if (post) {
-      setFileId(post.imageId);
+      setFileId(post.imageId); 
     }
   }, [post]);
 
-  // Handler function to delete the post
   const handleDeletePost = () => {
     deletePost({ postId: id, imageId: post?.imageId });
-    navigate(-1); // Navigate back to the previous page
+    navigate(-1);
   };
 
-  // Constructing the file URL for download
   const fileUrl = `https://cloud.appwrite.io/v1/storage/buckets/${appwriteConfig.storageId}/files/${fileId}/view?project=${appwriteConfig.projectId}&mode=admin`;
 
-  // Render the component
   return (
     <div className="post_details-container">
-      {/* Back button for navigation */}
       <div className="hidden md:flex max-w-5xl w-full">
         <Button
           onClick={() => navigate(-1)}
@@ -74,7 +60,6 @@ const PostDetails = () => {
         </Button>
       </div>
 
-      {/* Show loader while post data is loading */}
       {isLoading || !post ? (
         <Loader />
       ) : (
@@ -87,7 +72,6 @@ const PostDetails = () => {
 
           <div className="post_details-info">
             <div className="flex-between w-full">
-              {/* Link to the creator's profile */}
               <Link
                 to={`/profile/${post?.creator.$id}`}
                 className="flex items-center gap-3 ">
@@ -116,7 +100,6 @@ const PostDetails = () => {
               </Link>
 
               <div className="flex-center gap-4">
-                {/* Edit post link, shown only to the creator */}
                 <Link
                   to={`/update-post/${post?.$id}`}
                   className={`${user.id !== post?.creator.$id && "hidden"}`}>
@@ -128,7 +111,6 @@ const PostDetails = () => {
                   />
                 </Link>
 
-                {/* Delete post button, shown only to the creator */}
                 <Button
                   onClick={handleDeletePost}
                   variant="ghost"
@@ -161,7 +143,6 @@ const PostDetails = () => {
             </div>
 
             <div className="flex items-center justify-between w-full mt-4">
-              {/* Displaying post statistics */}
               <PostStats post={post} userId={user.id} />
               <Button
                 type="button"
@@ -182,7 +163,6 @@ const PostDetails = () => {
         <h3 className="body-bold md:h3-bold w-full my-10">
           Mais Conteudo
         </h3>
-        {/* Show loader while related posts are loading */}
         {isUserPostLoading || !relatedPosts ? (
           <Loader />
         ) : (
@@ -193,5 +173,4 @@ const PostDetails = () => {
   );
 };
 
-// Exporting PostDetails component as default
 export default PostDetails;

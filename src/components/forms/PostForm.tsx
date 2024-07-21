@@ -1,4 +1,3 @@
-// Importing necessary modules and components from libraries and local files
 import * as z from "zod";
 import { ID, Models } from "appwrite";
 import { useForm } from "react-hook-form";
@@ -16,19 +15,16 @@ import { FileUploader, Loader } from "@/components/shared/";
 import { useCreatePost, useUpdatePost } from "@/lib/react-query/queries";
 import { appwriteConfig, storage } from "@/lib/appwrite/config";
 
-// Define the type for PostFormProps
+
 type PostFormProps = {
   post?: Models.Document;
   action: "Create" | "Update";
 };
 
-// PostForm component definition
 const PostForm = ({ post, action }: PostFormProps) => {
-  const navigate = useNavigate(); // Hook for navigation
-  const { toast } = useToast(); // Hook for displaying toast notifications
-  const { user } = useUserContext(); // Hook to get the current user context
-
-  // Setting up the form with validation
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { user } = useUserContext();
   const form = useForm<z.infer<typeof PostValidation>>({
     resolver: zodResolver(PostValidation),
     defaultValues: {
@@ -39,11 +35,11 @@ const PostForm = ({ post, action }: PostFormProps) => {
     },
   });
 
-  // Queries
-  const { mutateAsync: createPost, isLoading: isLoadingCreate } = useCreatePost(); // Mutation for creating a post
-  const { mutateAsync: updatePost, isLoading: isLoadingUpdate } = useUpdatePost(); // Mutation for updating a post
+  // Query
+  const { mutateAsync: createPost, isLoading: isLoadingCreate } = useCreatePost();
+  const { mutateAsync: updatePost, isLoading: isLoadingUpdate } = useUpdatePost();
 
-  // Handler function for form submission
+  // Handler
   const handleSubmit = async (value: z.infer<typeof PostValidation>) => {
     // Prepare file upload
     const file = value.file[0];
@@ -53,14 +49,12 @@ const PostForm = ({ post, action }: PostFormProps) => {
     }
 
     try {
-      const imageId = ID.unique(); // Generate a unique ID for the image
+      const imageId = ID.unique(); // Use ID.unique() para gerar um identificador único válido
       console.log('Generated imageId:', imageId);
 
-      // Upload the file to storage
       const uploadedFile = await storage.createFile(appwriteConfig.storageId, imageId, file);
       console.log('Uploaded file:', uploadedFile);
 
-      // Generate the URL for the uploaded image
       const imageUrl = storage.getFileView(appwriteConfig.storageId, imageId).href;
       console.log('Generated imageUrl:', imageUrl);
 
@@ -68,7 +62,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
         throw new Error('File upload failed or URL generation failed');
       }
 
-      // If action is "Update", update the existing post
+      // ACTION = UPDATE
       if (post && action === "Update") {
         const updatedPost = await updatePost({
           ...value,
@@ -82,10 +76,10 @@ const PostForm = ({ post, action }: PostFormProps) => {
             title: `${action} post failed. Please try again.`,
           });
         }
-        return navigate(`/posts/${post.$id}`); // Navigate to the updated post
+        return navigate(`/posts/${post.$id}`);
       }
 
-      // If action is "Create", create a new post
+      // ACTION = CREATE
       const newPost = await createPost({
         ...value,
         userId: user.id,
@@ -98,21 +92,18 @@ const PostForm = ({ post, action }: PostFormProps) => {
           title: `${action} post failed. Please try again.`,
         });
       }
-      navigate("/"); // Navigate to the homepage
+      navigate("/");
     } catch (error) {
       console.error('Error during submission:', error);
       toast({ title: "Falha no upload do arquivo. Tente novamente." });
     }
   };
 
-  // Render the PostForm component
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
         className="flex flex-col gap-9 w-full max-w-5xl">
-        
-        {/* Caption field */}
         <FormField
           control={form.control}
           name="caption"
@@ -130,7 +121,6 @@ const PostForm = ({ post, action }: PostFormProps) => {
           )}
         />
 
-        {/* File upload field */}
         <FormField
           control={form.control}
           name="file"
@@ -148,7 +138,6 @@ const PostForm = ({ post, action }: PostFormProps) => {
           )}
         />
 
-        {/* Location field */}
         <FormField
           control={form.control}
           name="location"
@@ -165,7 +154,6 @@ const PostForm = ({ post, action }: PostFormProps) => {
           )}
         />
 
-        {/* Tags field */}
         <FormField
           control={form.control}
           name="tags"
@@ -187,7 +175,6 @@ const PostForm = ({ post, action }: PostFormProps) => {
           )}
         />
 
-        {/* Form action buttons */}
         <div className="flex gap-4 items-center justify-end">
           <Button
             type="button"
@@ -208,5 +195,4 @@ const PostForm = ({ post, action }: PostFormProps) => {
   );
 };
 
-// Exporting PostForm component as default
 export default PostForm;
